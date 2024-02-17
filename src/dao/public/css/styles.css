@@ -1,0 +1,176 @@
+body {
+  background-color: grey;
+}
+
+.card {
+  padding: 0;
+  border: none;
+  border-radius: 15px;
+  transition: transform 0.3s;
+  background-color: #fff;
+  color: #000;
+}
+
+.allProducts {
+  color: #fff;
+  width: max-content;
+  margin: 0 auto;
+  margin-bottom: 28px;
+}
+
+.card-header {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.imageContent {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 16px;
+}
+
+.card-footer {
+  height: max-content;
+  display: flex;
+  justify-content: center;
+  color: #fff;
+  background-color: #007bff;
+}
+
+.id {
+  font-size: smaller;
+}
+
+.titleRealTimeContent {
+  margin: 24px 0;
+}
+
+.titleRealTime {
+  width: max-content;
+  color: #fff;
+  margin: 0 auto;
+  margin-top: 12px;
+}
+
+.chatTitle {
+  width: max-content;
+  margin: 0 auto;
+  color: #fff;
+}
+
+.chatContainer {
+  width: 500px;
+  height: 400px;
+  margin: 18px auto;
+  background-color: beige;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  font-size: medium;
+  overflow-y: scroll;
+}
+
+.chatInsertContainer {
+  width: max-content;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+
+.chatUser {
+  width: 380px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  background-color: rgb(233, 233, 20);
+}
+
+.chatUser:focus {
+  background-color: #fff;
+}
+
+.chatMessage {
+  width: 380px;
+  height: 36px;
+  margin-top: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  background-color: rgb(237, 237, 105);
+  overflow-y: auto;
+  white-space: pre-wrap;
+  outline: none;
+}
+
+.chatMessage:focus {
+  background-color: #fff;
+}
+
+.chatButton {
+  width: 70px;
+  height: 36px;
+  margin: 12px auto;
+  border-radius: 8px;
+  background-color: rgb(250, 112, 14);
+  color: #fff;
+}
+
+.chatButton:active {
+  background-color: rgb(151, 73, 17);
+  color: #000;
+}
+
+.message {
+  border: 1px solid black;
+  padding: 0 0 0 12px;
+  width: max-content;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  background-color: #a7abed;
+  display: flex;
+}
+
+.message strong {
+  width: max-content;
+  height: max-content;
+}
+
+.message p {
+  margin: 0 0 0 18px;
+  max-width: 250px;
+  height: max-content;
+  margin-bottom: 4px;
+  font-size: medium;
+}
+
+.deleteContainer {
+  padding-left: 8px;
+}
+
+.buttonDelete {
+  margin: 12px;
+  font-size: 12px;
+  width: max-content;
+  height: max-content;
+  border: none;
+  border-radius: 300px;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.buttonDelete:active {
+  border: 1px solid black;
+}

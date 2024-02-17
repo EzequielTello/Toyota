@@ -1,0 +1,27 @@
+<div>
+  <h1 class="chatTitle">ChatToyota</h1>
+
+  <div class="chatContainer" id="chat"></div>
+
+  <form class="chatInsertContainer" onsubmit="return newMessage()">
+    <div>
+      <input
+        type="user"
+        class="chatUser"
+        id="user"
+        placeholder="nombre..."
+      /></div>
+    <div>
+      <input
+        type="text"
+        class="chatMessage"
+        id="message"
+        placeholder="message..."
+      /></div>
+
+    <input type="submit" value="Enviar" class="chatButton" id="submitButton" />
+  </form>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/chat.js"></script>
