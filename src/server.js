@@ -27,7 +27,10 @@ export let arrMessage = [];
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, "/dao", "/public")));
+app.use(express.static(path.join(__dirname, "public")));
+app.get("/chat", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "chat.html"));
+});
 
 app.engine(
   "handlebars",
@@ -50,15 +53,19 @@ mongoose
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
   console.log("Usuario conectado");
+
   socket.emit("welcome", "Bienvenido nuevo cliente");
+
   socket.on("new-message", (data) => {
     console.log("Nuevo mensaje recibido:", data);
     arrMessage.push(data);
     io.sockets.emit("message-all", arrMessage);
     console.log("Mensajes enviados a todos los clientes:", arrMessage);
   });
+  const products = await Product.find();
+  socket.emit("products", products);
 
   socket.on("newProduct", async (newProductData) => {
     try {
