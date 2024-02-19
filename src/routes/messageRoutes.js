@@ -1,5 +1,5 @@
 import express from "express";
-import MessageManager from "../mongoManagers/messageManager.js";
+import MessageManager from "../dao/mongoManagers/messageManager.js";
 
 const router = express.Router();
 

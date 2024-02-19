@@ -1,5 +1,5 @@
 import express from "express";
-import ProductManager from "../mongoManagers/productManager.js";
+import ProductManager from "../dao/mongoManagers/productManager.js";
 
 const router = express.Router();
 

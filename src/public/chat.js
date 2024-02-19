@@ -1,6 +1,6 @@
 const socket = io();
 
-socket.on("messages", (messages) => {
+socket.on("message-all", (messages) => {
   renderMessages(messages);
 });
 

@@ -2,7 +2,14 @@
   <h1 class="chatTitle">ChatToyota</h1>
 
   <div class="chatContainer" id="chat"></div>
+{{#each messages}}
+<div class="msg">
+  <p>{{this.users}}:</p>
+  <p>{{this.message}}</p>
 
+</div>
+{{/each}}
+</div>
   <form class="chatInsertContainer" onsubmit="return newMessage()">
     <div>
       <input
