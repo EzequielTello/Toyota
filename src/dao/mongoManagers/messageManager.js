@@ -35,4 +35,4 @@ class MessageManager {
   }
 }
 
-export default MessageManager;
+export { MessageManager };

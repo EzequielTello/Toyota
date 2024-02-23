@@ -13,6 +13,7 @@ import { homeHandlebarsRouter } from "./routes/homeHandlebarsRoutes.js";
 import { realTimeProductsRouter } from "./routes/realTimeProductsHandlebarsRoutes.js";
 import bodyParser from "body-parser";
 import { Product } from "./dao/models/products.js";
+import { MessageManager } from "./dao/mongoManagers/messageManager.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -21,6 +22,7 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const server = http.createServer(app);
 const io = new Server(server);
+const messageManager = new MessageManager();
 
 export let arrMessage = [];
 
@@ -58,11 +60,14 @@ io.on("connection", async (socket) => {
 
   socket.emit("welcome", "Bienvenido nuevo cliente");
 
-  socket.on("new-message", (data) => {
-    console.log("Nuevo mensaje recibido:", data);
-    arrMessage.push(data);
-    io.sockets.emit("message-all", arrMessage);
-    console.log("Mensajes enviados a todos los clientes:", arrMessage);
+  socket.on("newMessage", async (msg) => {
+    try {
+      await messageManager.createMessage(msg);
+      const messages = await messageManager.getMessages();
+      socket.emit("allMessages", messages);
+    } catch (err) {
+      console.error("Error", err);
+    }
   });
   const products = await Product.find();
   socket.emit("products", products);

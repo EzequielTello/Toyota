@@ -174,3 +174,109 @@ body {
 .buttonDelete:active {
   border: 1px solid black;
 }
+.product-list {
+  list-style: none;
+  padding: 0;
+}
+
+.product {
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  margin-left: 20px;
+  margin-right: auto;
+}
+
+.product h3 {
+  margin-top: 0;
+}
+
+.price {
+  font-weight: bold;
+}
+.quantity {
+  margin-top: 5px;
+}
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 5px;
+}
+.description {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+main {
+  padding: 20px;
+}
+
+.product {
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.product:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+h1,
+h2 {
+  color: #2c3e50;
+}
+.navbar {
+  background-color: #2980b9;
+  padding: 10px 0;
+  color: #fff;
+}
+
+.navbar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar ul li {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.navbar ul li a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.footer {
+  background-color: #34495e;
+  color: #fff;
+  padding: 20px 0;
+  text-align: center;
+}
+.fondohome {
+  background-image: url("/autonegro.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.fondoreal {
+  background-image: url("/auto.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.colorReal {
+  color: red;
+}
+#productForm label {
+  color: red;
+  border: 2px solid red;
+  font-size: 16px;
+  padding: 8px;
+}
+.fondochat {
+  background-image: url("/autos.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}

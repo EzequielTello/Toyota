@@ -9,7 +9,7 @@ const realTimeProductsRouter = Router();
 realTimeProductsRouter.get("/", async (req, res) => {
   try {
     const products = await Product.find();
-    res.render("realTimeProductsHandlebars", {
+    res.render("realTimeProductsHandlebars.handlebars", {
       products,
       styles: "/css/styles.css",
     });

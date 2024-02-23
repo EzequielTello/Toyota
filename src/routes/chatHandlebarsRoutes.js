@@ -1,16 +1,18 @@
 import { Router } from "express";
-import { arrMessage } from "../server.js";
+import { MessageManager } from "../dao/mongoManagers/messageManager.js";
 
-const chatHandlebarsRouter = Router();
+const messageManager = new MessageManager();
 
-chatHandlebarsRouter.get("/", (req, res) => {
-  res.render("chatHandlebars", { messages: arrMessage });
-});
+const chatHandlebarsRouter = new Router();
 
-chatHandlebarsRouter.post("/", (req, res) => {
-  const newMessage = req.body.message;
-  arrMessage.push(newMessage);
-  res.redirect("/chatHandlebars");
+chatHandlebarsRouter.get("/chat", async (req, res) => {
+  try {
+    const msgs = await messageManager.getMessages();
+    const chat = { msgs };
+    res.render("chatHandlebars.handlebars", chat);
+  } catch (error) {
+    return err;
+  }
 });
 
 export { chatHandlebarsRouter };

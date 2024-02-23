@@ -1,10 +1,14 @@
-<div>
+<head>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body class="fondochat">
+<div class="chat">
   <h1 class="chatTitle">ChatToyota</h1>
 
   <div class="chatContainer" id="chat"></div>
 {{#each messages}}
 <div class="msg">
-  <p>{{this.users}}:</p>
+  <p>{{this.user}}:</p>
   <p>{{this.message}}</p>
 
 </div>
@@ -31,3 +35,5 @@
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
+<script src="/chat.js"></script>
+</body>

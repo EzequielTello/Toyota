@@ -7,7 +7,7 @@ homeHandlebarsRouter.get("/", async (req, res) => {
   try {
     const products = await Product.find();
     console.log("Productos resuperados:", products);
-    res.render("homehandlebars", { products });
+    res.render("homeHandlebars.handlebars", { products });
   } catch (error) {
     console.error("Error al obtener productos:", error);
     res.status(500).send("Error interno del servidor");
