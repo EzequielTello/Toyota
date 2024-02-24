@@ -6,7 +6,9 @@ class CartManager {
       const cart = await Cart.findOne({ userId });
       return cart;
     } catch (error) {
-      throw new Error("Error al obtener el carrito");
+      throw new Error("Error al obtener el carrito").populate(
+        "products.productId"
+      );
     }
   }
 

@@ -5,8 +5,6 @@ class ProductManager {
     try {
       let filter = {};
       if (query) {
-        // Aquí puedes implementar la lógica para filtrar por la query
-        // Por ejemplo, si la query es una cadena de texto para buscar en el nombre o descripción
         filter = {
           $or: [
             { name: { $regex: query, $options: "i" } },
