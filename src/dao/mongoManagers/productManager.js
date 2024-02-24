@@ -1,12 +1,44 @@
 import { Product } from "../models/products.js";
 
 class ProductManager {
-  async getProducts() {
+  async getProducts({ limit = 10, page = 1, sort, query } = {}) {
     try {
-      const products = await Product.find();
+      let filter = {};
+      if (query) {
+        // Aquí puedes implementar la lógica para filtrar por la query
+        // Por ejemplo, si la query es una cadena de texto para buscar en el nombre o descripción
+        filter = {
+          $or: [
+            { name: { $regex: query, $options: "i" } },
+            { description: { $regex: query, $options: "i" } },
+          ],
+        };
+      }
+
+      let sortOption = {};
+      if (sort) {
+        sortOption = { price: sort === "asc" ? 1 : -1 };
+      }
+
+      const skip = (page - 1) * limit;
+
+      const products = await Product.find(filter)
+        .sort(sortOption)
+        .skip(skip)
+        .limit(limit)
+        .exec();
       return products;
     } catch (error) {
       throw new Error("Error al obtener los productos");
+    }
+  }
+
+  async getTotalProductsCount() {
+    try {
+      const count = await Product.countDocuments();
+      return count;
+    } catch (error) {
+      throw new Error("Error al contar los productos");
     }
   }
 

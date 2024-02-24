@@ -1,8 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
 import { engine } from "express-handlebars";
-import productRoutes from "./routes/productRoutes.js";
-import { router } from "./routes/cartRoutes.js";
+import { router as productRoutes } from "./routes/productRoutes.js";
+import { router as cartRoutes } from "./routes/cartRoutes.js";
+
 import http from "http";
 import { Server } from "socket.io";
 import { chatHandlebarsRouter } from "./routes/chatHandlebarsRoutes.js";
@@ -88,9 +89,9 @@ io.on("connection", async (socket) => {
     console.log("Usuario desconectado");
   });
 });
-app.use("/products", productRoutes);
+app.use("/productsHandlebars", productRoutes);
 app.use("/chatHandlebars", chatHandlebarsRouter);
-app.use("/carts", router);
+app.use("/cartHandlebars", cartRoutes);
 app.use("/homeHandlebars", homeHandlebarsRouter);
 app.use("/realTimeProductsHandlebars", realTimeProductsRouter);
 server.listen(PORT, () => {

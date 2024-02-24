@@ -2,7 +2,6 @@
 
 import { Router } from "express";
 import { Product } from "../dao/models/products.js";
-import path from "path";
 
 const realTimeProductsRouter = Router();
 

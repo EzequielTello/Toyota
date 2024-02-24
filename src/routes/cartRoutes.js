@@ -70,4 +70,66 @@ router.delete("/:userId/remove/:productId", async (req, res) => {
   }
 });
 
+// Obtener el carrito de un usuario
+router.get("/:cid", async (req, res) => {
+  try {
+    const cart = await CartManager.getCartWithProducts(req.params.cid);
+    if (cart) {
+      res.json(cart);
+    } else {
+      res.status(404).json({ message: "Carrito no encontrado" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+// Eliminar un producto específico del carrito
+router.delete("/:cid/products/:pid", async (req, res) => {
+  try {
+    const { cid, pid } = req.params;
+    const updatedCart = await CartManager.removeProductFromCart(cid, pid);
+    res.json(updatedCart);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Actualizar todo el carrito
+router.put("/:cid", async (req, res) => {
+  try {
+    const { cid } = req.params;
+    const updatedCart = await CartManager.updateCart(cid, req.body);
+    res.json(updatedCart);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Actualizar la cantidad de un producto en el carrito
+router.put("/:cid/products/:pid", async (req, res) => {
+  try {
+    const { cid, pid } = req.params;
+    const { quantity } = req.body;
+    const updatedCart = await CartManager.updateProductQuantity(
+      cid,
+      pid,
+      quantity
+    );
+    res.json(updatedCart);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Eliminar todos los productos del carrito
+router.delete("/:cid", async (req, res) => {
+  try {
+    const { cid } = req.params;
+    await CartManager.removeAllProductsFromCart(cid);
+    res.json({ message: "Todos los productos del carrito fueron eliminados" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 export { router };

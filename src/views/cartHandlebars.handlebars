@@ -1,0 +1,21 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToyotaCars</title>
+  </head>
+  <body>
+    <h1>Carrito de Compras</h1>
+    <h2>Productos en el carrito:</h2>
+    <ul>
+      {{#each cart.products}}
+        <li>{{this.productId.title}}
+          - Precio:
+          {{this.productId.price}}
+          - Cantidad:
+          {{this.quantity}}</li>
+      {{/each}}
+    </ul>
+    <p>Total: {{cart.totalPrice}}</p>
+  </body>
+</html>
