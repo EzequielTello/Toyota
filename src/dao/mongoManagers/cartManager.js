@@ -3,12 +3,12 @@ import Cart from "../models/carts.js";
 class CartManager {
   async getCart(userId) {
     try {
-      const cart = await Cart.findOne({ userId });
-      return cart;
-    } catch (error) {
-      throw new Error("Error al obtener el carrito").populate(
+      const cart = await Cart.findOne({ userId }).populate(
         "products.productId"
       );
+      return cart;
+    } catch (error) {
+      throw new Error("Error al obtener el carrito: " + error.message);
     }
   }
 
