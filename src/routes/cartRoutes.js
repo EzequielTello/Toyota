@@ -112,10 +112,13 @@ router.put("/:cid", async (req, res) => {
 router.put("/:cid/products/:pid", async (req, res) => {
   try {
     const { cid, pid } = req.params;
-    const { quantity } = req.body;
+    const { title, description, price, quantity } = req.body;
     const updatedCart = await CartManager.updateProductQuantity(
       cid,
       pid,
+      title,
+      description,
+      price,
       quantity
     );
     res.json(updatedCart);

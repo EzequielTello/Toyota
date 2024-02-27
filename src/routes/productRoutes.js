@@ -6,7 +6,14 @@ const router = express.Router();
 // Obtener todos los productos
 router.get("/", async (req, res) => {
   try {
-    let { limit = 10, page = 1, sort, query } = req.query;
+    let {
+      limit = 10,
+      page = 1,
+      sort,
+      query,
+      category,
+      availability,
+    } = req.query;
     limit = parseInt(limit);
     page = parseInt(page);
 
@@ -16,6 +23,8 @@ router.get("/", async (req, res) => {
       page,
       sort,
       query,
+      category,
+      availability,
     });
 
     // Devolver el resultado con el formato especificado en tu pregunta
@@ -90,7 +99,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // Eliminar un producto
-router.delete("/eliminar/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const result = await ProductManager.deleteProduct(req.params.id);
     if (result) {

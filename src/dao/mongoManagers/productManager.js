@@ -1,7 +1,14 @@
 import { Product } from "../models/products.js";
 
 class ProductManager {
-  async getProducts({ limit = 10, page = 1, sort, query } = {}) {
+  async getProducts({
+    limit = 10,
+    page = 1,
+    sort,
+    query,
+    category,
+    availability,
+  } = {}) {
     try {
       let filter = {};
       if (query) {
@@ -12,7 +19,13 @@ class ProductManager {
           ],
         };
       }
+      if (category) {
+        filter.category = category;
+      }
 
+      if (availability) {
+        filter.availability = availability;
+      }
       let sortOption = {};
       if (sort) {
         sortOption = { price: sort === "asc" ? 1 : -1 };
