@@ -1,5 +1,4 @@
 import Cart from "../models/carts.js";
-import { generateUserID } from "../../utils/userUtils.js";
 
 class CartManager {
   async getCart(userId) {
@@ -15,7 +14,6 @@ class CartManager {
 
   async createCart(userId) {
     try {
-      const userId = generateUserID();
       const newCart = new Cart({ userId });
       await newCart.save();
       return newCart;
@@ -24,11 +22,15 @@ class CartManager {
     }
   }
 
-  async addToCart(userId, productId, quantity) {
+  async addToCart(userId, productId, title, description, price, quantity) {
     try {
       const cart = await Cart.findOneAndUpdate(
         { userId },
-        { $addToSet: { products: { productId, quantity } } },
+        {
+          $addToSet: {
+            products: { productId, title, description, price, quantity },
+          },
+        },
         { new: true }
       );
       return cart;

@@ -29,11 +29,14 @@ router.post("/:userId", async (req, res) => {
 
 // Agregar un producto al carrito de un usuario
 router.post("/:userId/add", async (req, res) => {
-  const { productId, quantity } = req.body;
+  const { productId, title, description, price, quantity } = req.body;
   try {
     const cart = await CartManager.addToCart(
       req.params.userId,
       productId,
+      title,
+      description,
+      price,
       quantity
     );
     res.json(cart);

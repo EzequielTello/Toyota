@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { engine } from "express-handlebars";
 import { router as productRoutes } from "./routes/productRoutes.js";
 import { router as cartRoutes } from "./routes/cartRoutes.js";
-
+import usuarioRoutes from "./routes/usuarioRoutes.js";
 import http from "http";
 import { Server } from "socket.io";
 import { chatHandlebarsRouter } from "./routes/chatHandlebarsRoutes.js";
@@ -29,7 +29,7 @@ export let arrMessage = [];
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(usuarioRoutes);
 app.use(express.static(path.join(__dirname, "public")));
 app.get("/chat", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "chat.html"));
