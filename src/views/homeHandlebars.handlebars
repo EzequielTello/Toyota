@@ -26,7 +26,7 @@
       <ul class="productList">
         {{#each products}}
           <li class="product">
-            <h3 class="title">Title:{{this.title}}</h3>
+            <h3 class="title">Title:{{this.name}}</h3>
             <p class="description">Description:{{this.description}}</p>
             <p class="price">Price: ${{this.price}}</p>
             <p class="quantity">Quantity: {{this.quantity}}</p>
@@ -51,14 +51,17 @@
     ></script>
     <!-- Socket.IO y tu script de cliente -->
     <script src="/socket.io/socket.io.js"></script>
+
     <script>
       const socket = io(); socket.on("updateProducts", (products) => {
-      renderProducts(products); }); const renderProducts = (data) => { const
-      productList = data.map((product) => { return ` <li>
-      <h3>${product.title}</h3> <p>${product.description}</p> <p>Price:
-      $${product.price}</p> <p>Quantity: ${product.quantity}</p> </li> `;
-      }).join(""); const productsListElement =
-      document.getElementById("productList"); if (productsListElement) {
+      renderProductsHTML(products); }); const renderProductsHTML = (data) => {
+      console.log("Productos recibidos:", data); const productList =
+      data.map((product) => { return ` <li class="product"> <h3
+      class="title">Title:${product.name}</h3> <p
+      class="description">Description:${product.description}</p> <p
+      class="price">Price: $${product.price}</p> <p class="quantity">Quantity:
+      ${product.quantity}</p> </li> `; }).join(""); const productsListElement =
+      document.querySelector(".productList"); if (productsListElement) {
       productsListElement.innerHTML = productList; } };
     </script>
     <footer class="footer">

@@ -57,7 +57,7 @@ const renderProducts = (data) => {
     .map((product) => {
       return `
       <div class="product">
-        <h3>${product.title}</h3>
+        <h3>${product.name}</h3>
         <p>${product.description}</p>
         <p>Price: $${product.price}</p>
         <p>${product.quantity}<p>
