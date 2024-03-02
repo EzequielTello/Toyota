@@ -9,12 +9,15 @@ import { Server } from "socket.io";
 import { chatHandlebarsRouter } from "./routes/chatHandlebarsRoutes.js";
 import { fileURLToPath } from "url";
 import path from "path";
-import { dirname, join } from "path";
+import { dirname } from "path";
 import { homeHandlebarsRouter } from "./routes/homeHandlebarsRoutes.js";
 import { realTimeProductsRouter } from "./routes/realTimeProductsHandlebarsRoutes.js";
 import bodyParser from "body-parser";
 import { Product } from "./dao/models/products.js";
 import { MessageManager } from "./dao/mongoManagers/messageManager.js";
+import session from "express-session";
+import cookieParser from "cookie-parser";
+import authRoutes from "./routes/authRoutes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -24,6 +27,15 @@ const PORT = process.env.PORT || 8080;
 const server = http.createServer(app);
 const io = new Server(server);
 const messageManager = new MessageManager();
+
+app.use(cookieParser());
+app.use(
+  session({
+    secret: "your-secret-key",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 export let arrMessage = [];
 
@@ -94,6 +106,7 @@ app.use("/chatHandlebars", chatHandlebarsRouter);
 app.use("/cartHandlebars", cartRoutes);
 app.use("/homeHandlebars", homeHandlebarsRouter);
 app.use("/realTimeProductsHandlebars", realTimeProductsRouter);
+app.use(authRoutes);
 server.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });

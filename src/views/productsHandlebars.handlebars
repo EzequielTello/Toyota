@@ -2,18 +2,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ToyotaCars</title>
+    <title>Productos</title>
+    <link rel="stylesheet" href="/css/styles.css" />
   </head>
-  <body>
-    <h1>Lista de Productos</h1>
-    <ul>
-      {{#each products}}
-        <li>{{this.title}}
-          - Precio:
-          {{this.price}}
-          - Cantidad:
-          {{this.quantity}}</li>
-      {{/each}}
-    </ul>
+  <body class="bodyp">
+    <div class="containerp">
+      <h1 class="h1p">Lista de productos</h1>
+      <div class="user-info">
+        <p>Bienvenido, {{user.username}}. Rol: {{user.role}}</p>
+      </div>
+      <ul class="product-list">
+        {{#each products}}
+          <li class="product-item">{{this.title}}
+            - Precio:
+            {{this.price}}
+            - Cantidad:
+            {{this.quantity}}</li>
+        {{/each}}
+      </ul>
+      <a href="/logout" class="logout-link">Logout</a>
+    </div>
   </body>
 </html>

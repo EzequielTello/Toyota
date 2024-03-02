@@ -39,6 +39,16 @@ class UsuarioManager {
       throw new Error("Error al eliminar el usuario: " + error.message);
     }
   }
+  async getUserByEmail(email) {
+    try {
+      const user = await Usuario.findOne({ email });
+      return user;
+    } catch (error) {
+      throw new Error(
+        "Error al obtener el usuario por email: " + error.message
+      );
+    }
+  }
 }
 
 export default new UsuarioManager();
