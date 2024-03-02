@@ -5,8 +5,8 @@ const homeHandlebarsRouter = express.Router();
 
 homeHandlebarsRouter.get("/", async (req, res) => {
   try {
-    const products = await Product.find();
-    console.log("Productos resuperados:", products);
+    const products = await Product.find().lean();
+    console.log("Productos recuperados:", products);
     res.render("homeHandlebars.handlebars", { products });
   } catch (error) {
     console.error("Error al obtener productos:", error);
