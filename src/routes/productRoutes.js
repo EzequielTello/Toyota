@@ -7,20 +7,22 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     let {
-      limit = 10,
       page = 1,
+      limit = 2,
       sort,
       query,
       category,
       availability,
     } = req.query;
-    limit = parseInt(limit);
-    page = parseInt(page);
 
+    page = parseInt(page);
+    limit = parseInt(limit);
+
+    const skip = (page - 1) * limit;
     // Lógica para buscar y paginar los productos según los parámetros proporcionados
     const products = await ProductManager.getProducts({
       limit,
-      page,
+      skip,
       sort,
       query,
       category,
@@ -35,16 +37,15 @@ router.get("/", async (req, res) => {
     const hasPrevPage = prevPage !== null;
     const hasNextPage = nextPage !== null;
     const prevLink = hasPrevPage
-      ? `/api/products?page=${prevPage}&limit=${limit}`
+      ? `/productsHandlebars?page=${prevPage}&limit=${limit}`
       : null;
     const nextLink = hasNextPage
-      ? `/api/products?page=${nextPage}&limit=${limit}`
+      ? `/productsHandlebars?page=${nextPage}&limit=${limit}`
       : null;
 
-    res.json({
-      status: "success",
-      payload: products,
-      totalpages: totalPages,
+    res.render("productsHandlebars.handlebars", {
+      products,
+      totalPages,
       prevPage,
       nextPage,
       page,
@@ -52,6 +53,7 @@ router.get("/", async (req, res) => {
       hasNextPage,
       prevLink,
       nextLink,
+      styles: "/css/styles.css",
     });
   } catch (error) {
     res.status(500).json({ message: error.message });

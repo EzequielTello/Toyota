@@ -3,7 +3,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Productos</title>
+
     <link rel="stylesheet" href="/css/styles.css" />
+
   </head>
   <body class="bodyp">
     <div class="containerp">
@@ -13,14 +15,33 @@
       </div>
       <ul class="product-list">
         {{#each products}}
-          <li class="product-item">{{this.title}}
-            - Precio:
-            {{this.price}}
-            - Cantidad:
-            {{this.quantity}}</li>
+          <li class="product-item">
+            <h3 class="product-title">{{this.title}}</h3>
+            <p class="product-description">{{this.description}}</p>
+            <p class="product-price">Precio:
+              {{this.price}}
+              - Cantidad:
+              {{this.quantity}}</p>
+            <button class="add-to-cart-button">Agregar al Carrito</button>
+          </li>
         {{/each}}
       </ul>
-      <a href="/logout" class="logout-link">Logout</a>
+      <ul class="pagination">
+        {{#if prevLink}}
+          <li class="pagination-item"><a
+              href="{{prevLink}}"
+              class="pagination-link"
+            >Anterior</a></li>
+        {{/if}}
+        {{#if nextLink}}
+          <li class="pagination-item"><a
+              href="{{nextLink}}"
+              class="pagination-link"
+            >Siguiente</a></li>
+        {{/if}}
+      </ul>
     </div>
+    <a href="/logout" class="logout-link">Logout</a>
+
   </body>
 </html>

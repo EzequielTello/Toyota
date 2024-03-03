@@ -1,21 +1,22 @@
 import express from "express";
 import usuarioManager from "../dao/mongoManagers/usuarioManager.js";
 
-const router = express.Router();
+const loginHandlebarsRouter = express.Router();
 
-router.get("/login", (req, res) => {
-  res.render("login");
+loginHandlebarsRouter.get("/", (req, res) => {
+  res.render("loginHandlebars");
 });
-// Ruta para el login
-router.post("/login", async (req, res) => {
+
+loginHandlebarsRouter.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    // Buscar el usuario  por correo electrónico
+
     const user = await usuarioManager.getUserByEmail(email);
 
-    // Verificar si se encontró un usuario y si la contraseña coincide
-    if (!user || user.password !== password) {
-      // Si las credenciales son incorrectas, devolver un mensaje de error
+    if (
+      !user ||
+      !(await usuarioManager.comparePassword(password, user.password))
+    ) {
       return res.status(401).json({ message: "Credenciales incorrectas" });
     }
 
@@ -29,30 +30,37 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/register", (req, res) => {
-  res.render("register");
+const registerHandlebarsRouter = express.Router();
+
+registerHandlebarsRouter.get("/", (req, res) => {
+  res.render("registerHandlebars");
 });
-// Ruta para el registro de usuarios
-router.post("/register", async (req, res) => {
+
+registerHandlebarsRouter.post("/register", async (req, res) => {
   try {
     // Extraer los datos del cuerpo de la solicitud
     const { username, email, password } = req.body;
+    // Verificar si el usuario ya existe
+    const existingUser = await usuarioManager.getUserByEmail(email);
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ message: "El correo electrónico ya está registrado" });
+    }
 
-    // Validar los datos de entrada (por ejemplo, verificar que el email sea único)
-
+    // Crear un nuevo usuario con contraseña hasheada
+    const hashedPassword = await usuarioManager.hashPassword(password);
     // Crear un nuevo usuario en la base de datos
     const nuevoUsuario = await usuarioManager.createUsuario({
       username,
       email,
-      password,
+      password: hashedPassword,
     });
 
-    // Enviar una respuesta de éxito
     res.status(201).json(nuevoUsuario);
   } catch (error) {
-    // Manejar cualquier error que ocurra durante el registro
     res.status(400).json({ message: error.message });
   }
 });
 
-export default router;
+export { loginHandlebarsRouter, registerHandlebarsRouter };

@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import { engine } from "express-handlebars";
 import { router as productRoutes } from "./routes/productRoutes.js";
-import { router as cartRoutes } from "./routes/cartRoutes.js";
+import { cartRouter } from "./routes/cartRoutes.js";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
 import http from "http";
 import { Server } from "socket.io";
@@ -17,7 +17,10 @@ import { Product } from "./dao/models/products.js";
 import { MessageManager } from "./dao/mongoManagers/messageManager.js";
 import session from "express-session";
 import cookieParser from "cookie-parser";
-import authRoutes from "./routes/authRoutes.js";
+import {
+  loginHandlebarsRouter,
+  registerHandlebarsRouter,
+} from "./routes/authRoutes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -41,7 +44,7 @@ export let arrMessage = [];
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(usuarioRoutes);
+
 app.use(express.static(path.join(__dirname, "public")));
 app.get("/chat", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "chat.html"));
@@ -103,10 +106,12 @@ io.on("connection", async (socket) => {
 });
 app.use("/productsHandlebars", productRoutes);
 app.use("/chatHandlebars", chatHandlebarsRouter);
-app.use("/cartHandlebars", cartRoutes);
+app.use("/cartHandlebars", cartRouter);
 app.use("/homeHandlebars", homeHandlebarsRouter);
 app.use("/realTimeProductsHandlebars", realTimeProductsRouter);
-app.use(authRoutes);
+app.use(usuarioRoutes);
+app.use("/loginHandlebars", loginHandlebarsRouter);
+app.use("/registerHandlebars", registerHandlebarsRouter);
 server.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });

@@ -1,10 +1,13 @@
 import express from "express";
 import CartManager from "../dao/mongoManagers/cartManager.js";
 
-const router = express.Router();
+const cartRouter = express.Router();
 
+cartRouter.get("/", (req, res) => {
+  res.render("cartHandlebars.handlebars");
+});
 // Obtener el carrito de un usuario
-router.get("/:userId", async (req, res) => {
+cartRouter.get("/:userId", async (req, res) => {
   try {
     const cart = await CartManager.getCart(req.params.userId);
     if (cart) {
@@ -18,7 +21,7 @@ router.get("/:userId", async (req, res) => {
 });
 
 // Crear un nuevo carrito para un usuario
-router.post("/:userId", async (req, res) => {
+cartRouter.post("/:userId", async (req, res) => {
   try {
     const newCart = await CartManager.createCart(req.params.userId);
     res.status(201).json(newCart);
@@ -28,7 +31,7 @@ router.post("/:userId", async (req, res) => {
 });
 
 // Agregar un producto al carrito de un usuario
-router.post("/:userId/add", async (req, res) => {
+cartRouter.post("/:userId/add", async (req, res) => {
   const { productId, title, description, price, quantity } = req.body;
   try {
     const cart = await CartManager.addToCart(
@@ -46,7 +49,7 @@ router.post("/:userId/add", async (req, res) => {
 });
 
 // Actualizar la cantidad de un producto en el carrito de un usuario
-router.put("/:userId/update/:productId", async (req, res) => {
+cartRouter.put("/:userId/update/:productId", async (req, res) => {
   const { quantity } = req.body;
   try {
     const cart = await CartManager.updateCartItem(
@@ -61,7 +64,7 @@ router.put("/:userId/update/:productId", async (req, res) => {
 });
 
 // Eliminar un producto del carrito de un usuario
-router.delete("/:userId/remove/:productId", async (req, res) => {
+cartRouter.delete("/:userId/remove/:productId", async (req, res) => {
   try {
     const cart = await CartManager.removeFromCart(
       req.params.userId,
@@ -74,7 +77,7 @@ router.delete("/:userId/remove/:productId", async (req, res) => {
 });
 
 // Obtener el carrito de un usuario
-router.get("/:cid", async (req, res) => {
+cartRouter.get("/:cid", async (req, res) => {
   try {
     const cart = await CartManager.getCartWithProducts(req.params.cid);
     if (cart) {
@@ -87,7 +90,7 @@ router.get("/:cid", async (req, res) => {
   }
 });
 // Eliminar un producto específico del carrito
-router.delete("/:cid/products/:pid", async (req, res) => {
+cartRouter.delete("/:cid/products/:pid", async (req, res) => {
   try {
     const { cid, pid } = req.params;
     const updatedCart = await CartManager.removeProductFromCart(cid, pid);
@@ -98,7 +101,7 @@ router.delete("/:cid/products/:pid", async (req, res) => {
 });
 
 // Actualizar todo el carrito
-router.put("/:cid", async (req, res) => {
+cartRouter.put("/:cid", async (req, res) => {
   try {
     const { cid } = req.params;
     const updatedCart = await CartManager.updateCart(cid, req.body);
@@ -109,7 +112,7 @@ router.put("/:cid", async (req, res) => {
 });
 
 // Actualizar la cantidad de un producto en el carrito
-router.put("/:cid/products/:pid", async (req, res) => {
+cartRouter.put("/:cid/products/:pid", async (req, res) => {
   try {
     const { cid, pid } = req.params;
     const { title, description, price, quantity } = req.body;
@@ -128,7 +131,7 @@ router.put("/:cid/products/:pid", async (req, res) => {
 });
 
 // Eliminar todos los productos del carrito
-router.delete("/:cid", async (req, res) => {
+cartRouter.delete("/:cid", async (req, res) => {
   try {
     const { cid } = req.params;
     await CartManager.removeAllProductsFromCart(cid);
@@ -138,4 +141,4 @@ router.delete("/:cid", async (req, res) => {
   }
 });
 
-export { router };
+export { cartRouter };

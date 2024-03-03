@@ -2,7 +2,7 @@ import { Product } from "../models/products.js";
 
 class ProductManager {
   async getProducts({
-    limit = 10,
+    limit = 2,
     page = 1,
     sort,
     query,
@@ -38,7 +38,18 @@ class ProductManager {
         .skip(skip)
         .limit(limit)
         .exec();
-      return products;
+
+      const validProducts = products.map((product) => ({
+        title: product.title || "Sin título",
+        description: product.description || "Sin descripción",
+        price: product.price != null ? product.price : "Precio no disponible",
+        quantity:
+          product.quantity != null
+            ? product.quantity
+            : "Cantidad no disponible",
+      }));
+
+      return validProducts;
     } catch (error) {
       throw new Error("Error al obtener los productos");
     }

@@ -1,5 +1,5 @@
 import Usuario from "../models/usuario.js";
-
+import bcrypt from "bcrypt";
 class UsuarioManager {
   async getAllUsuarios() {
     try {
@@ -47,6 +47,28 @@ class UsuarioManager {
       throw new Error(
         "Error al obtener el usuario por email: " + error.message
       );
+    }
+  }
+  async hashPassword(password) {
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      return hashedPassword;
+    } catch (error) {
+      throw new Error("Error al cifrar la contraseña: " + error.message);
+    }
+  }
+  async comparePassword(password, hashedPassword) {
+    try {
+      console.log("Comparando contraseñas...");
+      console.log("Contraseña proporcionada:", password);
+      console.log("Contraseña almacenada:", hashedPassword);
+
+      const match = await bcrypt.compare(password, hashedPassword);
+      console.log("Coincide:", match);
+
+      return match;
+    } catch (error) {
+      throw new Error("Error al comparar contraseñas: " + error.message);
     }
   }
 }
