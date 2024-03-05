@@ -38,7 +38,7 @@ const registerHandlebarsRouter = express.Router();
 registerHandlebarsRouter.use(express.urlencoded({ extended: true }));
 
 registerHandlebarsRouter.get("/", (req, res) => {
-  res.render("registerHandlebars");
+  res.render("loginHandlebars");
 });
 
 registerHandlebarsRouter.post("/register", async (req, res) => {

@@ -141,4 +141,23 @@ cartRouter.delete("/:cid", async (req, res) => {
   }
 });
 
+// Agregar un producto al carrito de un usuario desde la vista productsHandlebars
+cartRouter.post("/add-to-cart", async (req, res) => {
+  const { userId, productId, title, description, price, quantity } = req.body;
+  try {
+    // Lógica para agregar el producto al carrito
+    const cart = await CartManager.addToCart(
+      userId,
+      productId,
+      title,
+      description,
+      price,
+      quantity
+    );
+    res.json(cart);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 export { cartRouter };
