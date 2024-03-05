@@ -18,11 +18,10 @@ router.get("/", async (req, res) => {
     page = parseInt(page);
     limit = parseInt(limit);
 
-    const skip = (page - 1) * limit;
     // Lógica para buscar y paginar los productos según los parámetros proporcionados
     const products = await ProductManager.getProducts({
+      page,
       limit,
-      skip,
       sort,
       query,
       category,
@@ -114,4 +113,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+router.get("/logout", (req, res) => {
+  res.redirect("/homeHandlebars");
+});
 export { router };

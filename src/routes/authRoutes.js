@@ -3,6 +3,8 @@ import usuarioManager from "../dao/mongoManagers/usuarioManager.js";
 
 const loginHandlebarsRouter = express.Router();
 
+loginHandlebarsRouter.use(express.urlencoded({ extended: true }));
+
 loginHandlebarsRouter.get("/", (req, res) => {
   res.render("loginHandlebars");
 });
@@ -17,12 +19,13 @@ loginHandlebarsRouter.post("/login", async (req, res) => {
       !user ||
       !(await usuarioManager.comparePassword(password, user.password))
     ) {
+      console.log("Credenciales incorrectas");
       return res.status(401).json({ message: "Credenciales incorrectas" });
     }
 
     // Si las credenciales son válidas, establecer la sesión del usuario
     req.session.user = user;
-
+    console.log("Usuario conectado:", user.username);
     // Redirigir al usuario a la vista de productos
     res.redirect("/homeHandlebars");
   } catch (error) {
@@ -31,6 +34,8 @@ loginHandlebarsRouter.post("/login", async (req, res) => {
 });
 
 const registerHandlebarsRouter = express.Router();
+
+registerHandlebarsRouter.use(express.urlencoded({ extended: true }));
 
 registerHandlebarsRouter.get("/", (req, res) => {
   res.render("registerHandlebars");

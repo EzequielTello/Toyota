@@ -39,7 +39,8 @@ const deleteMessage = (id) => {
 };
 const newProduct = () => {
   const product = {
-    name: document.getElementById("name").value,
+    productId: document.getElementById("productid").value,
+    title: document.getElementById("name").value,
     description: document.getElementById("description").value,
     price: document.getElementById("price").value,
     quantity: document.getElementById("quantity").value,

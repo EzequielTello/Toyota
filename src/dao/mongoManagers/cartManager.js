@@ -22,20 +22,35 @@ class CartManager {
     }
   }
 
-  async addToCart(userId, productId, title, description, price, quantity) {
+  async addToCart(userId, products) {
     try {
-      const cart = await Cart.findOneAndUpdate(
-        { userId },
-        {
-          $addToSet: {
-            products: { productId, title, description, price, quantity },
-          },
-        },
-        { new: true }
-      );
+      console.log(products);
+      if (!Array.isArray(products)) {
+        throw new Error("El parámetro 'products' debe ser un arreglo.");
+      }
+      // Verifica si el carrito existe para el usuario
+      let cart = await Cart.findOne({ userId });
+      if (!cart) {
+        // Si no existe, crea un nuevo carrito
+        cart = new Cart({ userId, products: [] });
+      }
+
+      // Agrega cada producto al carrito
+      for (const product of products) {
+        cart.products.push(product);
+      }
+
+      // Calcula el totalPrice del carrito
+      cart.totalPrice = cart.products.reduce((total, product) => {
+        return total + product.price * product.quantity;
+      }, 0);
+
+      // Guarda los cambios en el carrito
+      await cart.save();
+
       return cart;
     } catch (error) {
-      throw new Error("Error al agregar al carrito");
+      throw new Error("Error al agregar al carrito: " + error.message);
     }
   }
 

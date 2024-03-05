@@ -12,7 +12,7 @@ import path from "path";
 import { dirname } from "path";
 import { homeHandlebarsRouter } from "./routes/homeHandlebarsRoutes.js";
 import { realTimeProductsRouter } from "./routes/realTimeProductsHandlebarsRoutes.js";
-import bodyParser from "body-parser";
+
 import { Product } from "./dao/models/products.js";
 import { MessageManager } from "./dao/mongoManagers/messageManager.js";
 import session from "express-session";
@@ -41,9 +41,8 @@ app.use(
 );
 
 export let arrMessage = [];
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "public")));
 app.get("/chat", (req, res) => {
@@ -68,8 +67,6 @@ mongoose
   .catch((error) => {
     console.error("Error al conectar a MongoDB:", error);
   });
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 io.on("connection", async (socket) => {
   console.log("Usuario conectado");

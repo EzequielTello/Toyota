@@ -2,8 +2,8 @@ import { Product } from "../models/products.js";
 
 class ProductManager {
   async getProducts({
-    limit = 2,
     page = 1,
+    limit = 2,
     sort,
     query,
     category,
