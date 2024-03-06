@@ -27,7 +27,7 @@ loginHandlebarsRouter.post("/login", async (req, res) => {
     req.session.user = user;
     console.log("Usuario conectado:", user.username);
     // Redirigir al usuario a la vista de productos
-    res.redirect("/homeHandlebars");
+    res.redirect("/productsHandlebars");
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

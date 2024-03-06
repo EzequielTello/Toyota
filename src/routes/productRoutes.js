@@ -58,6 +58,21 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+router.get("/productos", async (req, res) => {
+  try {
+    // Obtener los productos de la base de datos
+    const productos = await productos.find();
+
+    // Renderizar la vista de productos y pasar los datos del usuario y los productos a la vista
+    res.render("productsHandlebars", {
+      user: req.session.user,
+      productos: productos,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 // Obtener un producto por ID
 router.get("/:id", async (req, res) => {
   try {
