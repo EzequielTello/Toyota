@@ -6,54 +6,60 @@ const router = express.Router();
 // Obtener todos los productos
 router.get("/", async (req, res) => {
   try {
-    let {
-      page = 1,
-      limit = 2,
-      sort,
-      query,
-      category,
-      availability,
-    } = req.query;
+    if (req.session.user) {
+      let {
+        page = 1,
+        limit = 2,
+        sort,
+        query,
+        category,
+        availability,
+      } = req.query;
 
-    page = parseInt(page);
-    limit = parseInt(limit);
+      page = parseInt(page);
+      limit = parseInt(limit);
 
-    // Lógica para buscar y paginar los productos según los parámetros proporcionados
-    const products = await ProductManager.getProducts({
-      page,
-      limit,
-      sort,
-      query,
-      category,
-      availability,
-    });
+      // Lógica para buscar y paginar los productos según los parámetros proporcionados
+      const products = await ProductManager.getProducts({
+        page,
+        limit,
+        sort,
+        query,
+        category,
+        availability,
+      });
 
-    // Devolver el resultado con el formato especificado en tu pregunta
-    const totalProducts = await ProductManager.getTotalProductsCount();
-    const totalPages = Math.ceil(totalProducts / limit);
-    const prevPage = page > 1 ? page - 1 : null;
-    const nextPage = page < totalPages ? page + 1 : null;
-    const hasPrevPage = prevPage !== null;
-    const hasNextPage = nextPage !== null;
-    const prevLink = hasPrevPage
-      ? `/productsHandlebars?page=${prevPage}&limit=${limit}`
-      : null;
-    const nextLink = hasNextPage
-      ? `/productsHandlebars?page=${nextPage}&limit=${limit}`
-      : null;
+      // Devolver el resultado con el formato especificado en tu pregunta
+      const totalProducts = await ProductManager.getTotalProductsCount();
+      const totalPages = Math.ceil(totalProducts / limit);
+      const prevPage = page > 1 ? page - 1 : null;
+      const nextPage = page < totalPages ? page + 1 : null;
+      const hasPrevPage = prevPage !== null;
+      const hasNextPage = nextPage !== null;
+      const prevLink = hasPrevPage
+        ? `/productsHandlebars?page=${prevPage}&limit=${limit}`
+        : null;
+      const nextLink = hasNextPage
+        ? `/productsHandlebars?page=${nextPage}&limit=${limit}`
+        : null;
 
-    res.render("productsHandlebars.handlebars", {
-      products,
-      totalPages,
-      prevPage,
-      nextPage,
-      page,
-      hasPrevPage,
-      hasNextPage,
-      prevLink,
-      nextLink,
-      styles: "/css/styles.css",
-    });
+      res.render("productsHandlebars.handlebars", {
+        products,
+        totalPages,
+        prevPage,
+        nextPage,
+        page,
+        hasPrevPage,
+        hasNextPage,
+        prevLink,
+        nextLink,
+        styles: "/css/styles.css",
+        user: req.session.user,
+      });
+    } else {
+      // Si no hay usuario autenticado, redirigir a la página de inicio de sesión
+      res.redirect("/loginHandlebars");
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

@@ -3,9 +3,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Productos</title>
-
     <link rel="stylesheet" href="/css/styles.css" />
-
   </head>
   <body class="bodyp">
     <div class="containerp">
@@ -13,9 +11,9 @@
       <h2 class="h1p">Lista de Productos</h2>
       <div class="user-info">
         {{#if user}}
-          <p>Bienvenido, {{user.username}}. Rol: {{user.role}}</p>
-        {{else}}
-          <p>No hay usuario definido</p>
+          <p>Bienvenido:
+            {{user.username}}. Rol:
+            {{#if user.isAdmin}}Administrador{{else}}Usuario{{/if}}</p>
         {{/if}}
       </div>
       <ul class="product-list">
@@ -34,26 +32,27 @@
               data-description="{{this.description}}"
               data-price="{{this.price}}"
               data-quantity="{{this.quantity}}"
-            >Agregar al Carrito</button>
+            >
+              Agregar al Carrito
+            </button>
           </li>
         {{/each}}
       </ul>
       <ul class="pagination">
         {{#if prevLink}}
-          <li class="pagination-item"><a
-              href="{{prevLink}}"
-              class="pagination-link"
-            >Anterior</a></li>
+          <li class="pagination-item">
+            <a href="{{prevLink}}" class="pagination-link">Anterior</a>
+          </li>
         {{/if}}
         {{#if nextLink}}
-          <li class="pagination-item"><a
-              href="{{nextLink}}"
-              class="pagination-link"
-            >Siguiente</a></li>
+          <li class="pagination-item">
+            <a href="{{nextLink}}" class="pagination-link">Siguiente</a>
+          </li>
         {{/if}}
       </ul>
     </div>
     <a href="/loginHandlebars" class="logout-link">Logout</a>
+    <a href="/homeHandlebars" class="footer-button">Volver al inicio</a>
     <script>
       const addToCartButtons = document.querySelectorAll('.add-to-cart-button');
       addToCartButtons.forEach(button => { button.addEventListener('click',
@@ -63,14 +62,10 @@
       button.getAttribute('data-price'); const quantity =
       button.getAttribute('data-quantity'); try { const response = await
       fetch('/cart/add-to-cart', { method: 'POST', headers: { 'Content-Type':
-      'application/json' }, body: JSON.stringify({ userId: 'user_id', //
-      Reemplaza 'user_id' con el ID de usuario correspondiente productId, title,
+      'application/json' }, body: JSON.stringify({ productId, title,
       description, price, quantity }) }); const cart = await response.json();
-      console.log(cart); // Puedes hacer algo con la respuesta, como mostrar un
-      mensaje de éxito } catch (error) { console.error('Error al agregar al
-      carrito:', error); // Puedes mostrar un mensaje de error al usuario si lo
-      deseas } }); });
+      console.log(cart); } catch (error) { console.error('Error al agregar al
+      carrito:', error); } }); });
     </script>
-    <a href="/homeHandlebars" class="footer-button">Volver al inicio</a>
   </body>
 </html>

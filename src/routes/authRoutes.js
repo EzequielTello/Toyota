@@ -25,6 +25,11 @@ loginHandlebarsRouter.post("/login", async (req, res) => {
 
     // Si las credenciales son válidas, establecer la sesión del usuario
     req.session.user = user;
+    let isAdmin = false;
+    if (email === "admincoder@coder.com" && password === "adminCod3r123") {
+      isAdmin = true;
+    }
+    req.session.user.isAdmin = isAdmin;
     console.log("Usuario conectado:", user.username);
     // Redirigir al usuario a la vista de productos
     res.redirect("/productsHandlebars");
@@ -55,14 +60,20 @@ registerHandlebarsRouter.post("/register", async (req, res) => {
 
     // Crear un nuevo usuario con contraseña hasheada
     const hashedPassword = await usuarioManager.hashPassword(password);
+    let isAdmin = false;
+    if (email === "admincoder@coder.com" && password === "adminCod3r123") {
+      isAdmin = true;
+    }
+    const role = isAdmin ? "admin" : "usuario";
     // Crear un nuevo usuario en la base de datos
     const nuevoUsuario = await usuarioManager.createUsuario({
       username,
       email,
       password: hashedPassword,
+      role,
     });
 
-    res.status(201).json(nuevoUsuario);
+    res.redirect("/loginHandlebars");
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

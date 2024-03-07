@@ -101,6 +101,10 @@ io.on("connection", async (socket) => {
     console.log("Usuario desconectado");
   });
 });
+app.get("/", (req, res) => {
+  res.redirect("/loginHandlebars");
+});
+
 app.use("/productsHandlebars", productRoutes);
 app.use("/chatHandlebars", chatHandlebarsRouter);
 app.use("/cartHandlebars", cartRouter);
