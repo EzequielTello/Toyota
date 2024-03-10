@@ -12,7 +12,7 @@ import path from "path";
 import { dirname } from "path";
 import { homeHandlebarsRouter } from "./routes/homeHandlebarsRoutes.js";
 import { realTimeProductsRouter } from "./routes/realTimeProductsHandlebarsRoutes.js";
-
+import passport from "passport";
 import { Product } from "./dao/models/products.js";
 import { MessageManager } from "./dao/mongoManagers/messageManager.js";
 import session from "express-session";
@@ -21,6 +21,9 @@ import {
   loginHandlebarsRouter,
   registerHandlebarsRouter,
 } from "./routes/authRoutes.js";
+import GitHubStrategy from "passport-github";
+import { githubLoginCallback } from "./dao/mongoManagers/authManagers.js";
+import githubRoutes from "./routes/githubRoutes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -39,6 +42,8 @@ app.use(
     saveUninitialized: true,
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 
 export let arrMessage = [];
 app.use(express.json());
@@ -101,10 +106,39 @@ io.on("connection", async (socket) => {
     console.log("Usuario desconectado");
   });
 });
+passport.use(
+  new GitHubStrategy(
+    {
+      clientID: "ef3a3cc612943d8792d6",
+      clientSecret: "cf8bf3a4b761a18435f990d032b470c79ea2924a",
+      callbackURL: "http://localhost:8080/auth/github/callback",
+    },
+    githubLoginCallback
+  )
+);
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((obj, done) => {
+  done(null, obj);
+});
+
+// Rutas para la autenticación de GitHub
+app.get("/auth/github", passport.authenticate("github"));
+app.get(
+  "/auth/github/callback",
+  passport.authenticate("github", {
+    successRedirect: "/",
+    failureRedirect: "/loginHandlebars",
+  })
+);
+
 app.get("/", (req, res) => {
   res.redirect("/loginHandlebars");
 });
-
+app.use("/github", githubRoutes);
 app.use("/productsHandlebars", productRoutes);
 app.use("/chatHandlebars", chatHandlebarsRouter);
 app.use("/cartHandlebars", cartRouter);

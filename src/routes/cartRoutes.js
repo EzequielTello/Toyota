@@ -34,14 +34,15 @@ cartRouter.post("/:userId", async (req, res) => {
 cartRouter.post("/:userId/add", async (req, res) => {
   const { productId, title, description, price, quantity } = req.body;
   try {
-    const cart = await CartManager.addToCart(
-      req.params.userId,
-      productId,
-      title,
-      description,
-      price,
-      quantity
-    );
+    const products = [];
+    products.push({
+      productId: productId,
+      title: title,
+      description: description,
+      price: price,
+      quantity: quantity,
+    });
+    const cart = await CartManager.addToCart(req.params.userId, products);
     res.json(cart);
   } catch (error) {
     res.status(400).json({ message: error.message });

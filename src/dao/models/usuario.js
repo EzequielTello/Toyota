@@ -19,6 +19,9 @@ const usuarioSchema = new mongoose.Schema({
     type: String,
     default: "usuario",
   },
+  accessToken: String,
+  refreshToken: String,
+  githubId: String,
 });
 
 const Usuario = mongoose.model("Usuario", usuarioSchema);

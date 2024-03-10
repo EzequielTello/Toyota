@@ -13,6 +13,11 @@ loginHandlebarsRouter.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    let isAdmin = false;
+    if (email === "admincoder@coder.com" && password === "adminCod3r123") {
+      isAdmin = true;
+    }
+    console.log("El usuario es administrador:", isAdmin);
     const user = await usuarioManager.getUserByEmail(email);
 
     if (
@@ -25,10 +30,7 @@ loginHandlebarsRouter.post("/login", async (req, res) => {
 
     // Si las credenciales son válidas, establecer la sesión del usuario
     req.session.user = user;
-    let isAdmin = false;
-    if (email === "admincoder@coder.com" && password === "adminCod3r123") {
-      isAdmin = true;
-    }
+
     req.session.user.isAdmin = isAdmin;
     console.log("Usuario conectado:", user.username);
     // Redirigir al usuario a la vista de productos
