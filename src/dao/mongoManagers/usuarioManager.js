@@ -12,7 +12,16 @@ class UsuarioManager {
 
   async createUsuario(data) {
     try {
-      const usuario = new Usuario(data);
+      const { email, password } = data;
+      let role = "usuario"; // Rol predeterminado
+
+      // Verificar si las credenciales corresponden a un administrador
+      if (email === "admincoder@coder.com" && password === "adminCod3r123") {
+        role = "administrador";
+      }
+
+      // Crear un nuevo usuario con el rol asignado
+      const usuario = new Usuario({ ...data, role });
       const savedUsuario = await usuario.save();
       return savedUsuario;
     } catch (error) {

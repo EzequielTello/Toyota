@@ -62,11 +62,11 @@ registerHandlebarsRouter.post("/register", async (req, res) => {
 
     // Crear un nuevo usuario con contraseña hasheada
     const hashedPassword = await usuarioManager.hashPassword(password);
-    let isAdmin = false;
+    let role = "usuario";
     if (email === "admincoder@coder.com" && password === "adminCod3r123") {
-      isAdmin = true;
+      role = "adminnistrador";
     }
-    const role = isAdmin ? "admin" : "usuario";
+
     // Crear un nuevo usuario en la base de datos
     const nuevoUsuario = await usuarioManager.createUsuario({
       username,
