@@ -16,7 +16,11 @@ loginHandlebarsRouter.post("/login", async (req, res) => {
     let isAdmin = false;
     if (email === "admincoder@coder.com" && password === "adminCod3r123") {
       isAdmin = true;
+      // Establecer el rol de administrador
+      const user = { email: "adminCoder@coder.com", role: "admin" };
+      req.session.user = user;
     }
+
     console.log("El usuario es administrador:", isAdmin);
     const user = await usuarioManager.getUserByEmail(email);
 
