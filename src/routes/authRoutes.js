@@ -56,6 +56,7 @@ registerHandlebarsRouter.post("/register", async (req, res) => {
   try {
     // Extraer los datos del cuerpo de la solicitud
     const { username, email, password } = req.body;
+
     // Verificar si el usuario ya existe
     const existingUser = await usuarioManager.getUserByEmail(email);
     if (existingUser) {
@@ -68,7 +69,7 @@ registerHandlebarsRouter.post("/register", async (req, res) => {
     const hashedPassword = await usuarioManager.hashPassword(password);
     let role = "usuario";
     if (email === "admincoder@coder.com" && password === "adminCod3r123") {
-      role = "adminnistrador";
+      role = "administrador";
     }
 
     // Crear un nuevo usuario en la base de datos
