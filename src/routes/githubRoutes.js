@@ -1,19 +1,19 @@
 // routes/githubRoutes.js
 
 import express from "express";
-import { getRepositories } from "../dao/mongoManagers/githubManagers.js";
+import passport from "passport";
 
 const router = express.Router();
 
-// Definir las rutas relacionadas con GitHub
-router.get("/repositories/:userId", async (req, res) => {
-  const userId = req.params.userId;
-  try {
-    const repositories = await getRepositories(userId);
-    res.json(repositories);
-  } catch (error) {
-    res.status(500).json({ message: "Error al obtener los repositorios" });
+router.get("/auth/github", passport.authenticate("github"));
+
+router.get(
+  "/auth/github/callback",
+  passport.authenticate("github", { failureRedirect: "/loginHandlebars" }),
+  (req, res) => {
+    // Autenticación exitosa, redirige a la página deseada
+    res.redirect("/homeHandlebars");
   }
-});
+);
 
 export default router;

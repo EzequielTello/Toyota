@@ -22,9 +22,8 @@ import {
   registerHandlebarsRouter,
 } from "./routes/authRoutes.js";
 import GitHubStrategy from "passport-github";
-import { githubLoginCallback } from "./dao/mongoManagers/authManagers.js";
 import githubRoutes from "./routes/githubRoutes.js";
-
+import Usuario from "./dao/models/usuario.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -113,7 +112,23 @@ passport.use(
       clientSecret: "cf8bf3a4b761a18435f990d032b470c79ea2924a",
       callbackURL: "http://localhost:8080/auth/github/callback",
     },
-    githubLoginCallback
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        let user = await Usuario.findOne({ githubId: profile.id });
+        if (!user) {
+          user = new Usuario({
+            githubId: profile.id,
+            username: profile.username,
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+          });
+          await user.save();
+        }
+        return done(null, user);
+      } catch (error) {
+        return done(error);
+      }
+    }
   )
 );
 
@@ -125,19 +140,26 @@ passport.deserializeUser((obj, done) => {
   done(null, obj);
 });
 
-// Rutas para la autenticación de GitHub
+app.get("/", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.redirect("/homehandlebars"); // Redirige a la página principal
+  } else {
+    next();
+  }
+});
+
+// Ruta para iniciar sesión con GitHub
 app.get("/auth/github", passport.authenticate("github"));
+
+// Callback de autenticación de GitHub
 app.get(
   "/auth/github/callback",
-  passport.authenticate("github", {
-    successRedirect: "/",
-    failureRedirect: "/loginHandlebars",
-  })
+  passport.authenticate("github", { failureRedirect: "/loginHandlebars" }),
+  (req, res) => {
+    // Autenticación exitosa, redirige a la página deseada
+    res.redirect("/homeHandlebars");
+  }
 );
-
-app.get("/", (req, res) => {
-  res.redirect("/loginHandlebars");
-});
 app.use("/github", githubRoutes);
 app.use("/productsHandlebars", productRoutes);
 app.use("/chatHandlebars", chatHandlebarsRouter);
