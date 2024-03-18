@@ -142,9 +142,9 @@ passport.deserializeUser((obj, done) => {
 
 app.get("/", (req, res) => {
   if (req.isAuthenticated()) {
-    res.redirect("/homehandlebars"); // Redirige a la página principal
+    res.redirect("/homeHandlebars"); // Redirige a la página principal
   } else {
-    next();
+    res.redirect("/loginHandlebars");
   }
 });
 

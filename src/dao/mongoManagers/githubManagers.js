@@ -1,13 +1,13 @@
 // githubController.js
 
 import axios from "axios";
-import User from "../models/usuario.js";
+import Usuario from "../models/usuario.js";
 
 // Función para obtener los repositorios de un usuario en GitHub
 export const getRepositories = async (userId) => {
   try {
-    const user = await User.findById(userId);
-    if (!user) {
+    const usuario = await Usuario.findById(userId);
+    if (!usuario) {
       throw new Error("Usuario no encontrado");
     }
     const response = await axios.get(
